@@ -426,14 +426,15 @@ function showHistory() {
   const container = document.getElementById("history-container");
   container.innerHTML = "";
 
+  // Ocultar todas las vistas menos el historial
   document
     .querySelectorAll(".practice-selection")
     .forEach((el) => el.classList.add("hidden"));
-  document.getElementById("results-screen").classList.add("hidden");
   document.getElementById("practice-screen").classList.add("hidden");
-
+  document.getElementById("results-screen").classList.add("hidden");
   document.getElementById("history-screen").classList.remove("hidden");
 
+  // Rellenar historial
   if (state.history.length === 0) {
     container.innerHTML =
       '<p class="text-gray-500 text-center">Aún no tienes ningún intento registrado</p>';
@@ -443,6 +444,7 @@ function showHistory() {
       card.className = `history-card ${
         item.success ? "history-card-success" : "history-card-failure"
       }`;
+
       card.innerHTML = `
         <div class="history-card-header">
           <span>${item.type} - ${item.date}</span>
@@ -453,6 +455,7 @@ function showHistory() {
         <div>Errores: ${item.errors}</div>
         <div class="history-card-joke">${item.joke}</div>
       `;
+
       container.appendChild(card);
     });
   }
@@ -472,6 +475,7 @@ function newPractice() {
 
 function backToPractice() {
   document.getElementById("history-screen").classList.add("hidden");
+
   document
     .getElementById(`${state.currentPracticeType}-selection`)
     .classList.remove("hidden");
