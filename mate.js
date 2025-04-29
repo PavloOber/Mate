@@ -526,19 +526,18 @@ function loadHistory() {
 
 // Mostrar historial
 function showHistory() {
-  // Ocultar todas las pantallas de ejercicios
-  document
-    .querySelectorAll(".practice-selection, #practice-screen, #results-screen")
-    .forEach((el) => {
-      el.classList.add("hidden");
-    });
-
-  // Mostrar solo el historial
-  document.getElementById("history-screen").classList.remove("hidden");
-
-  // Cargar y mostrar el historial
   const container = document.getElementById("history-container");
   container.innerHTML = "";
+
+  // Ocultar todo lo demás
+  document
+    .querySelectorAll(".practice-selection")
+    .forEach((el) => el.classList.add("hidden"));
+  document.getElementById("results-screen").classList.add("hidden");
+  document.getElementById("practice-screen").classList.add("hidden");
+
+  // Mostrar solo historial
+  document.getElementById("history-screen").classList.remove("hidden");
 
   if (state.history.length === 0) {
     container.innerHTML =
@@ -551,15 +550,15 @@ function showHistory() {
       }`;
 
       card.innerHTML = `
-              <div class="history-card-header">
-                  <span>${item.type} - ${item.date}</span>
-                  <span>${item.score}/${item.total}</span>
-              </div>
-              <div>Dificultad: ${item.difficulty}</div>
-              <div>Tiempo: ${item.time}s</div>
-              <div>Errores: ${item.errors}</div>
-              <div class="history-card-joke">${item.joke}</div>
-          `;
+        <div class="history-card-header">
+            <span>${item.type} - ${item.date}</span>
+            <span>${item.score}/${item.total}</span>
+        </div>
+        <div>Dificultad: ${item.difficulty}</div>
+        <div>Tiempo: ${item.time}s</div>
+        <div>Errores: ${item.errors}</div>
+        <div class="history-card-joke">${item.joke}</div>
+      `;
 
       container.appendChild(card);
     });
