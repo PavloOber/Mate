@@ -26,15 +26,12 @@ const translations = {
     time: "Tiempo:",
     errors: "Errores:",
     seconds: "segundos",
-    footer:
-      "© 2023 Práctica Matemática - Aprende matemáticas de forma divertida",
+    footer: "© 2023 Práctica Matemática",
     encouragement: "¡Sigue practicando! Lo harás mejor la próxima vez.",
     historyTitle: "Tu Historial",
     backToPractice: "Volver a practicar",
     historyBtnText: "Historial",
-    selectTable: "Selecciona una tabla",
-    startPractice: "Comenzar práctica",
-    placeholderAnswer: "Introduce tu respuesta",
+    showHistoryText: "Ver mi historial completo",
   },
   eu: {
     title: "Matematika Praktika",
@@ -62,19 +59,15 @@ const translations = {
     time: "Denbora:",
     errors: "Akatsak:",
     seconds: "segundo",
-    footer: "© 2023 Matematika Praktika - Ikasi matematika modu dibertigarrian",
-    encouragement: "Jarraitu praktikatzen! Hobeto egingo duzu hurrengo batean.",
+    footer: "© 2023 Matematika Praktika",
+    encouragement: "Jarraitu praktikatzen! Hobeto egingo duzu hurrengoan.",
     historyTitle: "Zure Historiala",
     backToPractice: "Praktikara itzuli",
-    historyBtnText: "Historiala",
-    selectTable: "Aukeratu taula bat",
-    startPractice: "Hasi praktika",
-    placeholderAnswer: "Sartu zure erantzuna",
+    historyBtnText: "Historial",
     showHistoryText: "Nire historia osoa ikusi",
   },
 };
 
-// Estado de la aplicación
 const state = {
   currentLanguage: "es",
   currentPracticeType: "multiplication",
@@ -88,13 +81,9 @@ const state = {
   history: [],
 };
 
-// Elementos del DOM
 const elements = {
   headerTitle: document.getElementById("header-title"),
   practiceTypes: document.getElementById("practice-types"),
-  multiplicationText: document.getElementById("multiplication-text"),
-  additionText: document.getElementById("addition-text"),
-  subtractionText: document.getElementById("subtraction-text"),
   multiplicationTitle: document.getElementById("multiplication-title"),
   multiplicationInstructions: document.getElementById(
     "multiplication-instructions"
@@ -124,7 +113,11 @@ const elements = {
   errorsMade: document.getElementById("errors-made"),
 };
 
-// Inicialización de la aplicación
+function safeAddListener(id, event, handler) {
+  const el = document.getElementById(id);
+  if (el) el.addEventListener(event, handler);
+}
+
 function init() {
   loadHistory();
   setupEventListeners();
@@ -132,55 +125,33 @@ function init() {
   switchLanguage("es");
 }
 
-// Configuración de event listeners
 function setupEventListeners() {
-  // Idioma
-  document
-    .getElementById("lang-es")
-    .addEventListener("click", () => switchLanguage("es"));
-  document
-    .getElementById("lang-eu")
-    .addEventListener("click", () => switchLanguage("eu"));
-  document
-    .getElementById("sidebar-history-btn")
-    .addEventListener("click", showHistory);
+  safeAddListener("lang-es", "click", () => switchLanguage("es"));
+  safeAddListener("lang-eu", "click", () => switchLanguage("eu"));
+  safeAddListener("sidebar-history-btn", "click", showHistory);
+  safeAddListener("start-addition", "click", startPractice);
+  safeAddListener("start-subtraction", "click", startPractice);
+  safeAddListener("submit-btn", "click", checkAnswer);
+  safeAddListener("try-again-btn", "click", tryAgain);
+  safeAddListener("new-practice-btn", "click", newPractice);
+  safeAddListener("show-history", "click", showHistory);
+  safeAddListener("back-to-practice", "click", backToPractice);
 
-  // Tipo de práctica
+  const input = document.getElementById("answer-input");
+  if (input) {
+    input.addEventListener("keypress", (e) => {
+      if (e.key === "Enter") checkAnswer();
+    });
+  }
+
   document.querySelectorAll(".practice-type-btn").forEach((btn) => {
     btn.addEventListener("click", () => {
       state.currentPracticeType = btn.dataset.type;
       updatePracticeSelection();
     });
   });
-
-  // Botones de práctica
-  document
-    .getElementById("start-addition")
-    .addEventListener("click", startPractice);
-  document
-    .getElementById("start-subtraction")
-    .addEventListener("click", startPractice);
-
-  // Envío de respuestas
-  document.getElementById("submit-btn").addEventListener("click", checkAnswer);
-  document.getElementById("answer-input").addEventListener("keypress", (e) => {
-    if (e.key === "Enter") checkAnswer();
-  });
-
-  // Resultados
-  document.getElementById("try-again-btn").addEventListener("click", tryAgain);
-  document
-    .getElementById("new-practice-btn")
-    .addEventListener("click", newPractice);
-  document
-    .getElementById("show-history")
-    .addEventListener("click", showHistory);
-  document
-    .getElementById("back-to-practice")
-    .addEventListener("click", backToPractice);
 }
 
-// Generación de botones de multiplicación
 function generateMultiplicationButtons() {
   for (let i = 1; i <= 10; i++) {
     const btn = document.createElement("button");
@@ -195,54 +166,35 @@ function generateMultiplicationButtons() {
   }
 }
 
-// Cambio de idioma
 function switchLanguage(lang) {
   state.currentLanguage = lang;
   updateTexts();
   updateLanguageButtons();
 }
 
-// Actualización de textos según idioma
 function updateTexts() {
   const lang = translations[state.currentLanguage];
   document.title = lang.title;
-  elements.historyBtnText.textContent = lang.historyBtnText;
-  elements.showHistoryText.textContent =
-    lang.showHistoryText || "Ver mi historial completo";
-  elements.score.textContent = lang.score;
-  elements.timeTaken.textContent = lang.time;
-  elements.errorsMade.textContent = lang.errors;
 
-  // Actualizar todos los textos
   Object.keys(elements).forEach((key) => {
     if (elements[key] && lang[key]) {
       elements[key].textContent = lang[key];
     }
   });
 
-  // Actualizar título de práctica
   updatePracticeTitle();
 }
 
-// Actualización de botones de idioma
 function updateLanguageButtons() {
   document
     .getElementById("lang-es")
     .classList.toggle("bg-blue-500", state.currentLanguage === "es");
   document
-    .getElementById("lang-es")
-    .classList.toggle("hover:bg-blue-500", state.currentLanguage !== "es");
-  document
     .getElementById("lang-eu")
     .classList.toggle("bg-blue-500", state.currentLanguage === "eu");
-  document
-    .getElementById("lang-eu")
-    .classList.toggle("hover:bg-blue-500", state.currentLanguage !== "eu");
 }
 
-// Actualización de selección de práctica
 function updatePracticeSelection() {
-  // Actualizar botones activos
   document.querySelectorAll(".practice-type-btn").forEach((btn) => {
     btn.classList.toggle(
       "active-practice",
@@ -250,7 +202,6 @@ function updatePracticeSelection() {
     );
   });
 
-  // Mostrar pantalla de selección correcta
   document.querySelectorAll(".practice-selection").forEach((el) => {
     el.classList.toggle(
       "hidden",
@@ -258,28 +209,19 @@ function updatePracticeSelection() {
     );
   });
 
-  // Actualizar textos
   updatePracticeTitle();
 }
 
-// Actualización del título de práctica
 function updatePracticeTitle() {
   const lang = translations[state.currentLanguage];
   let practiceText = lang[state.currentPracticeType];
-
   if (state.currentPracticeType === "multiplication") {
     practiceText = `${lang.multiplication} (${state.selectedTable})`;
   }
-
   elements.currentPracticeType.textContent = practiceText;
 }
 
-// Inicio de práctica
 function startPractice() {
-  // Ocultar historial si está visible
-  document.getElementById("history-screen").classList.add("hidden");
-
-  // Resto del código existente...
   generateQuestions();
   state.currentQuestion = 0;
   state.errors = 0;
@@ -299,14 +241,12 @@ function startPractice() {
   showQuestion();
 }
 
-// Generación de preguntas
 function generateQuestions() {
   state.questions = [];
   const count = 7;
 
   for (let i = 0; i < count; i++) {
     let question;
-
     switch (state.currentPracticeType) {
       case "multiplication":
         const multiplier = Math.floor(Math.random() * 10) + 1;
@@ -318,19 +258,17 @@ function generateQuestions() {
           text: `${state.selectedTable} × ${multiplier} = ?`,
         };
         break;
-
       case "addition":
         const a = Math.floor(Math.random() * 100) + 1;
         const b = Math.floor(Math.random() * 100) + 1;
         question = {
           type: "addition",
-          a: a,
-          b: b,
+          a,
+          b,
           answer: a + b,
           text: `${a} + ${b} = ?`,
         };
         break;
-
       case "subtraction":
         const x = Math.floor(Math.random() * 201) - 100;
         const y = Math.floor(Math.random() * 201) - 100;
@@ -343,19 +281,16 @@ function generateQuestions() {
         };
         break;
     }
-
     state.questions.push(question);
   }
 }
 
-// Mostrar pregunta actual
 function showQuestion() {
   const question = state.questions[state.currentQuestion];
   document.getElementById("question").textContent = question.text;
   document.getElementById("answer-input").focus();
 }
 
-// Iniciar temporizador
 function startTimer() {
   state.startTime = new Date();
   clearInterval(state.timerInterval);
@@ -369,59 +304,42 @@ function startTimer() {
   }, 1000);
 }
 
-// Obtener chiste de la API
 async function getJoke() {
   try {
     const response = await fetch("https://v2.jokeapi.dev/joke/Any?lang=es");
     const data = await response.json();
-
-    if (data.error) {
-      return "¡Ups! El chiste se escapó...";
-    }
-
-    if (data.type === "single") {
-      return data.joke;
-    } else {
-      return `${data.setup} ... ${data.delivery}`;
-    }
+    if (data.error) return "¡Ups! El chiste se escapó...";
+    return data.type === "single"
+      ? data.joke
+      : `${data.setup} ... ${data.delivery}`;
   } catch (error) {
-    console.error("Error fetching joke:", error);
     return "¿Sabes por qué los programadores siempre confunden Halloween con Navidad? Porque Oct 31 == Dec 25";
   }
 }
 
-// Comprobar respuesta
 function checkAnswer() {
   const input = document.getElementById("answer-input");
   const userAnswer = parseInt(input.value);
   const correctAnswer = state.questions[state.currentQuestion].answer;
-
   if (isNaN(userAnswer)) return;
 
-  // Registrar respuesta
   state.answers.push({
     question: state.questions[state.currentQuestion],
-    userAnswer: userAnswer,
+    userAnswer,
     isCorrect: userAnswer === correctAnswer,
   });
 
-  // Comprobar si es correcta
   if (userAnswer !== correctAnswer) {
     state.errors++;
     document.getElementById("error-count").textContent = state.errors;
     input.classList.add("wrong-answer");
     setTimeout(() => input.classList.remove("wrong-answer"), 500);
-
-    if (state.errors >= 3) {
-      endPractice(false);
-      return;
-    }
+    if (state.errors >= 3) return endPractice(false);
   } else {
     input.classList.add("correct-answer");
     setTimeout(() => input.classList.remove("correct-answer"), 500);
   }
 
-  // Siguiente pregunta o finalizar
   state.currentQuestion++;
   if (state.currentQuestion >= state.questions.length) {
     endPractice(true);
@@ -434,16 +352,13 @@ function checkAnswer() {
   }
 }
 
-// Finalizar práctica
 async function endPractice(success) {
   clearInterval(state.timerInterval);
-
   const endTime = new Date();
   const seconds = Math.floor((endTime - state.startTime) / 1000);
   const correctAnswers = state.answers.filter((a) => a.isCorrect).length;
   const joke = await getJoke();
 
-  // Guardar en historial
   addToHistory({
     date: new Date().toLocaleString(),
     type:
@@ -455,29 +370,26 @@ async function endPractice(success) {
     total: state.questions.length,
     errors: state.errors,
     time: seconds,
-    success: success,
-    joke: joke,
+    success,
+    joke,
   });
 
-  // Mostrar resultados
-  document.getElementById("score").textContent = `${
+  elements.score.textContent = `${
     translations[state.currentLanguage].score
   } ${correctAnswers}/${state.questions.length}`;
-  document.getElementById("time-taken").textContent = `${
+  elements.timeTaken.textContent = `${
     translations[state.currentLanguage].time
   } ${seconds} ${translations[state.currentLanguage].seconds}`;
-  document.getElementById("errors-made").textContent = `${
+  elements.errorsMade.textContent = `${
     translations[state.currentLanguage].errors
   } ${state.errors}`;
-  document.getElementById("joke-text").textContent = joke;
-
+  elements.jokeText.textContent = joke;
   updateResultMessage(success);
 
   document.getElementById("practice-screen").classList.add("hidden");
   document.getElementById("results-screen").classList.remove("hidden");
 }
 
-// Determinar dificultad
 function getDifficulty() {
   if (state.currentPracticeType === "multiplication") {
     if (state.selectedTable <= 5) return "Fácil";
@@ -487,91 +399,70 @@ function getDifficulty() {
   return state.currentPracticeType === "addition" ? "Media" : "Difícil";
 }
 
-// Actualizar mensaje de resultados
 function updateResultMessage(success) {
   const lang = translations[state.currentLanguage];
-  const resultEmoji = document.getElementById("result-emoji");
-  const resultMessage = document.getElementById("result-message");
-
-  if (success) {
-    resultEmoji.textContent = "🎉";
-    resultMessage.textContent = lang.successMessage;
-  } else {
-    resultEmoji.textContent = "💪";
-    resultMessage.textContent = lang.encouragement;
-  }
+  document.getElementById("result-emoji").textContent = success ? "🎉" : "💪";
+  elements.resultMessage.textContent = success
+    ? lang.successMessage
+    : lang.encouragement;
 }
 
-// Añadir al historial
 function addToHistory(result) {
-  state.history.unshift(result); // Añade al inicio del array
-  if (state.history.length > 10) {
-    state.history.pop(); // Limita a 10 intentos
-  }
+  state.history.unshift(result);
+  if (state.history.length > 10) state.history.pop();
   saveHistory();
 }
 
-// Guardar historial en localStorage
 function saveHistory() {
   localStorage.setItem("mathPracticeHistory", JSON.stringify(state.history));
 }
 
-// Cargar historial desde localStorage
 function loadHistory() {
   const saved = localStorage.getItem("mathPracticeHistory");
-  if (saved) {
-    state.history = JSON.parse(saved);
-  }
+  if (saved) state.history = JSON.parse(saved);
 }
 
-// Mostrar historial
 function showHistory() {
   const container = document.getElementById("history-container");
   container.innerHTML = "";
 
-  // Ocultar todo lo demás
   document
     .querySelectorAll(".practice-selection")
     .forEach((el) => el.classList.add("hidden"));
   document.getElementById("results-screen").classList.add("hidden");
   document.getElementById("practice-screen").classList.add("hidden");
 
-  // Mostrar solo historial
   document.getElementById("history-screen").classList.remove("hidden");
 
   if (state.history.length === 0) {
     container.innerHTML =
       '<p class="text-gray-500 text-center">Aún no tienes ningún intento registrado</p>';
   } else {
-    state.history.forEach((item, index) => {
+    state.history.forEach((item) => {
       const card = document.createElement("div");
       card.className = `history-card ${
         item.success ? "history-card-success" : "history-card-failure"
       }`;
-
       card.innerHTML = `
         <div class="history-card-header">
-            <span>${item.type} - ${item.date}</span>
-            <span>${item.score}/${item.total}</span>
+          <span>${item.type} - ${item.date}</span>
+          <span>${item.score}/${item.total}</span>
         </div>
         <div>Dificultad: ${item.difficulty}</div>
         <div>Tiempo: ${item.time}s</div>
         <div>Errores: ${item.errors}</div>
         <div class="history-card-joke">${item.joke}</div>
       `;
-
       container.appendChild(card);
     });
   }
 }
 
-// Intentar de nuevo
 function tryAgain() {
   document.getElementById("results-screen").classList.add("hidden");
   startPractice();
 }
 
-// Nueva práctica
 function newPractice() {
   document.getElementById("results-screen").classList.add("hidden");
   document
@@ -579,16 +470,11 @@ function newPractice() {
     .classList.remove("hidden");
 }
 
-// Volver a practicar desde historial
 function backToPractice() {
-  // Ocultar historial
   document.getElementById("history-screen").classList.add("hidden");
-
-  // Mostrar la selección de práctica correspondiente
   document
     .getElementById(`${state.currentPracticeType}-selection`)
     .classList.remove("hidden");
 }
 
-// Iniciar aplicación
 document.addEventListener("DOMContentLoaded", init);
