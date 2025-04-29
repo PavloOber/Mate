@@ -70,6 +70,7 @@ const translations = {
     selectTable: "Aukeratu taula bat",
     startPractice: "Hasi praktika",
     placeholderAnswer: "Sartu zure erantzuna",
+    showHistoryText: "Nire historia osoa ikusi",
   },
 };
 
@@ -116,6 +117,11 @@ const elements = {
   historyTitle: document.getElementById("history-title"),
   historyContainer: document.getElementById("history-container"),
   backToPractice: document.getElementById("back-to-practice"),
+  historyBtnText: document.getElementById("history-btn-text"),
+  showHistoryText: document.getElementById("show-history-text"),
+  score: document.getElementById("score"),
+  timeTaken: document.getElementById("time-taken"),
+  errorsMade: document.getElementById("errors-made"),
 };
 
 // Inicialización de la aplicación
@@ -199,6 +205,13 @@ function switchLanguage(lang) {
 // Actualización de textos según idioma
 function updateTexts() {
   const lang = translations[state.currentLanguage];
+  document.title = lang.title;
+  elements.historyBtnText.textContent = lang.historyBtnText;
+  elements.showHistoryText.textContent =
+    lang.showHistoryText || "Ver mi historial completo";
+  elements.score.textContent = lang.score;
+  elements.timeTaken.textContent = lang.time;
+  elements.errorsMade.textContent = lang.errors;
 
   // Actualizar todos los textos
   Object.keys(elements).forEach((key) => {
