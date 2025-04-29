@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Práctica Matemática</title>
+    <link rel="stylesheet" href="../css/mate copy.css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body class="bg-gray-100 min-h-screen flex flex-col">
+    <header class="bg-blue-600 text-white shadow-lg">
+      <div
+        class="container mx-auto px-4 py-4 flex justify-between items-center"
+      >
+        <h1 class="text-2xl font-bold" id="header-title">
+          Práctica Matemática
+        </h1>
+        <div class="flex items-center space-x-4">
+          <button
+            id="lang-es"
+            class="px-3 py-1 rounded-full bg-blue-500 hover:bg-blue-400 transition flex items-center"
+          >
+            <span
+              class="language-flag"
+              style="background-image: url('https://flagcdn.com/es.svg')"
+            ></span>
+            ES
+          </button>
+          <button
+            id="lang-eu"
+            class="px-3 py-1 rounded-full hover:bg-blue-500 transition flex items-center"
+          >
+            <span
+              class="language-flag"
+              style="background-image: url('https://flagcdn.com/eu.svg')"
+            ></span>
+            EU
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <div class="flex flex-1">
+      <div class="w-56 bg-white shadow-md hidden md:block">
+        <div class="p-4">
+          <h3
+            class="font-bold text-gray-500 uppercase text-sm mb-2"
+            id="practice-types"
+          >
+            Tipos de práctica
+          </h3>
+          <ul class="space-y-1">
+            <li>
+              <button
+                class="practice-type-btn active-practice"
+                data-type="multiplication"
+              >
+                Multiplicación
+              </button>
+            </li>
+            <li>
+              <button class="practice-type-btn" data-type="addition">
+                Suma
+              </button>
+            </li>
+            <li>
+              <button class="practice-type-btn" data-type="subtraction">
+                Resta
+              </button>
+            </li>
+          </ul>
+        </div>
+        <div class="p-4 mt-auto">
+          <!-- mt-auto para que se pegue abajo -->
+          <button
+            id="sidebar-history-btn"
+            class="w-full flex items-center justify-center px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-lg transition"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-5 w-5 mr-2 text-gray-600"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+              />
+            </svg>
+            <span id="history-btn-text">Historial</span>
+          </button>
+        </div>
+      </div>
+
+      <main class="flex-1 container mx-auto px-4 py-8">
+        <div
+          class="max-w-md mx-auto bg-white rounded-xl shadow-md overflow-hidden p-6"
+        >
+          <div id="multiplication-selection" class="practice-selection">
+            <h2
+              class="text-xl font-bold mb-6 text-center"
+              id="multiplication-title"
+            >
+              Tablas de multiplicar
+            </h2>
+            <div
+              class="grid grid-cols-5 gap-3 mb-8"
+              id="multiplication-grid"
+            ></div>
+            <div
+              class="text-center text-gray-500 text-sm"
+              id="multiplication-instructions"
+            >
+              Practicaremos 7 problemas aleatorios de la tabla que selecciones.
+            </div>
+          </div>
+
+          <div id="addition-selection" class="practice-selection hidden">
+            <h2 class="text-xl font-bold mb-6 text-center" id="addition-title">
+              Suma (1-100)
+            </h2>
+            <div class="text-center mb-8">
+              <button
+                id="start-addition"
+                class="px-6 py-3 bg-blue-600 text-white font-medium rounded hover:bg-blue-700 transition"
+              >
+                Comenzar práctica
+              </button>
+            </div>
+            <div
+              class="text-center text-gray-500 text-sm"
+              id="addition-instructions"
+            >
+              Practicaremos 7 problemas aleatorios de suma con números del 1 al
+              100.
+            </div>
+          </div>
+
+          <div id="subtraction-selection" class="practice-selection hidden">
+            <h2
+              class="text-xl font-bold mb-6 text-center"
+              id="subtraction-title"
+            >
+              Resta (-100 a 100)
+            </h2>
+            <div class="text-center mb-8">
+              <button
+                id="start-subtraction"
+                class="px-6 py-3 bg-blue-600 text-white font-medium rounded hover:bg-blue-700 transition"
+              >
+                Comenzar práctica
+              </button>
+            </div>
+            <div
+              class="text-center text-gray-500 text-sm"
+              id="subtraction-instructions"
+            >
+              Practicaremos 7 problemas aleatorios de resta con números del -100
+              al 100.
+            </div>
+          </div>
+
+          <div id="practice-screen" class="hidden">
+            <div class="flex justify-between items-center mb-6">
+              <h2 class="text-xl font-bold" id="practice-title">
+                Práctica de
+                <span id="current-practice-type">multiplicación</span>
+              </h2>
+              <div class="text-sm text-gray-500" id="progress">1/7</div>
+            </div>
+            <div class="mb-6 p-4 bg-gray-50 rounded-lg">
+              <div class="text-center text-2xl font-bold mb-2" id="question">
+                1 × 1 = ?
+              </div>
+              <input
+                type="number"
+                id="answer-input"
+                class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder="Introduce tu respuesta"
+              />
+            </div>
+            <div class="flex justify-between mb-4">
+              <div>
+                <span id="errors-text">Errores:</span>
+                <span id="error-count">0</span>/3
+              </div>
+              <div id="timer">Tiempo: 0s</div>
+            </div>
+            <div class="flex justify-center">
+              <button
+                id="submit-btn"
+                class="px-6 py-2 bg-blue-600 text-white font-medium rounded hover:bg-blue-700 transition"
+              >
+                Comprobar
+              </button>
+            </div>
+          </div>
+
+          <div id="results-screen" class="hidden text-center">
+            <h2 class="text-xl font-bold mb-4" id="results-title">
+              Resultados
+            </h2>
+            <div class="text-5xl mb-4" id="result-emoji">🎉</div>
+            <div class="text-lg mb-2" id="result-message">¡Felicidades!</div>
+            <div class="mb-6">
+              <div id="score">Puntuación: 7/7</div>
+              <div id="time-taken">Tiempo: 45 segundos</div>
+              <div id="errors-made">Errores: 0</div>
+            </div>
+            <div class="bg-yellow-50 p-4 rounded-lg mb-4">
+              <div class="text-sm text-gray-500 mb-1">
+                Aquí tienes un chiste para ti:
+              </div>
+              <div id="joke-text" class="font-medium"></div>
+            </div>
+            <div class="grid grid-cols-2 gap-4">
+              <button
+                id="try-again-btn"
+                class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition"
+              >
+                Intentar otra vez
+              </button>
+              <button
+                id="new-practice-btn"
+                class="px-4 py-2 bg-gray-200 text-gray-800 rounded hover:bg-gray-300 transition"
+              >
+                Nueva práctica
+              </button>
+            </div>
+            <div class="mt-4 text-center">
+              <button
+                id="show-history"
+                class="text-blue-600 hover:text-blue-800 text-sm"
+              >
+                Ver mi historial completo
+              </button>
+            </div>
+          </div>
+
+          <div id="history-screen" class="hidden">
+            <h2 class="text-xl font-bold mb-4 text-center" id="history-title">
+              Tu Historial
+            </h2>
+            <div id="history-container" class="space-y-4"></div>
+            <div class="mt-4 text-center">
+              <button
+                id="back-to-practice"
+                class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition"
+              >
+                Volver a practicar
+              </button>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <footer class="bg-gray-800 text-white py-4">
+      <div class="container mx-auto px-4 text-center text-sm">
+        <p id="footer-text">© 2023 Práctica Matemática</p>
+      </div>
+    </footer>
+
+    <script src="../js/mate copy.js"></script>
+  </body>
+</html>
