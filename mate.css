@@ -130,3 +130,38 @@
 .sidebar-history-btn:active {
   transform: translateY(0);
 }
+
+.practice-selection,
+#practice-screen,
+#results-screen,
+#history-screen {
+  min-height: 400px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Estilos específicos para el historial */
+#history-container {
+  max-height: 60vh;
+  overflow-y: auto;
+  padding-right: 0.5rem;
+}
+
+/* Scrollbar personalizada */
+#history-container::-webkit-scrollbar {
+  width: 6px;
+}
+
+#history-container::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 10px;
+}
+
+#history-container::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 10px;
+}
+
+#history-container::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
+}

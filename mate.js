@@ -256,15 +256,15 @@ function updatePracticeTitle() {
 
 // Inicio de práctica
 function startPractice() {
-  // Generar preguntas
-  generateQuestions();
+  // Ocultar historial si está visible
+  document.getElementById("history-screen").classList.add("hidden");
 
-  // Reiniciar estado
+  // Resto del código existente...
+  generateQuestions();
   state.currentQuestion = 0;
   state.errors = 0;
   state.answers = [];
 
-  // Actualizar UI
   document
     .querySelectorAll(".practice-selection")
     .forEach((el) => el.classList.add("hidden"));
@@ -275,10 +275,7 @@ function startPractice() {
   document.getElementById("error-count").textContent = "0";
   document.getElementById("answer-input").value = "";
 
-  // Iniciar temporizador
   startTimer();
-
-  // Mostrar primera pregunta
   showQuestion();
 }
 
@@ -509,6 +506,17 @@ function loadHistory() {
 
 // Mostrar historial
 function showHistory() {
+  // Ocultar todas las pantallas de ejercicios
+  document
+    .querySelectorAll(".practice-selection, #practice-screen, #results-screen")
+    .forEach((el) => {
+      el.classList.add("hidden");
+    });
+
+  // Mostrar solo el historial
+  document.getElementById("history-screen").classList.remove("hidden");
+
+  // Cargar y mostrar el historial
   const container = document.getElementById("history-container");
   container.innerHTML = "";
 
@@ -536,9 +544,6 @@ function showHistory() {
       container.appendChild(card);
     });
   }
-
-  document.getElementById("results-screen").classList.add("hidden");
-  document.getElementById("history-screen").classList.remove("hidden");
 }
 
 // Intentar de nuevo
@@ -557,7 +562,10 @@ function newPractice() {
 
 // Volver a practicar desde historial
 function backToPractice() {
+  // Ocultar historial
   document.getElementById("history-screen").classList.add("hidden");
+
+  // Mostrar la selección de práctica correspondiente
   document
     .getElementById(`${state.currentPracticeType}-selection`)
     .classList.remove("hidden");
