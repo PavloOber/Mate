@@ -5,7 +5,9 @@ const translations = {
     practiceTypes: "Tipos de práctica",
     multiplication_btn: "Multiplicación",
     multiplication: "Multiplicación",
+    addition_btn: "Suma",
     addition: "Suma",
+    subtraction_btn: "Resta",
     subtraction: "Resta",
     multiplicationTitle: "Tablas de multiplicar",
     multiplicationInstructions:
@@ -27,7 +29,7 @@ const translations = {
     time: "Tiempo:",
     errors: "Errores:",
     seconds: "segundos",
-    footer: "© 2023 Práctica Matemática",
+    footer: " 2023 Práctica Matemática",
     encouragement: "¡Sigue practicando! Lo harás mejor la próxima vez.",
     historyTitle: "Tu Historial",
     backToPractice: "Volver a practicar",
@@ -39,7 +41,9 @@ const translations = {
     practiceTypes: "Praktika motak",
     multiplication_btn: "Biderketa",
     multiplication: "Biderketa",
+    addition_btn: "Batuketa",
     addition: "Batuketa",
+    subtraction_btn: "Kenketa",
     subtraction: "Kenketa",
     multiplicationTitle: "Biderketa taulak",
     multiplicationInstructions:
@@ -61,7 +65,7 @@ const translations = {
     time: "Denbora:",
     errors: "Akatsak:",
     seconds: "segundo",
-    footer: "© 2023 Matematika Praktika",
+    footer: " 2023 Matematika Praktika",
     encouragement: "Jarraitu praktikatzen! Hobeto egingo duzu hurrengoan.",
     historyTitle: "Zure Historiala",
     backToPractice: "Praktikara itzuli",
@@ -85,6 +89,9 @@ const state = {
 
 const elements = {
   headerTitle: document.getElementById("header-title"),
+  multiplication_btn: document.getElementById("multiplication_btn"),
+  addition_btn: document.getElementById("addition_btn"),
+  subtraction_btn: document.getElementById("subtraction_btn"),
   practiceTypes: document.getElementById("practice-types"),
   multiplicationTitle: document.getElementById("multiplication-title"),
   multiplicationInstructions: document.getElementById(
