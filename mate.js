@@ -27,7 +27,13 @@ const translations = {
     newPractice: "Nueva práctica",
     score: "Puntuación:",
     time: "Tiempo:",
+    timer: "Tiempo:",
+    tryAgainBtn: "Intentar otra vez",
+    newPracticeBtn: "Nueva práctica",
+    jokeTitle: "Aquí tienes un chiste para ti:",
+    timeTaken: "Tiempo:",
     errors: "Errores:",
+    errorsMade: "Errores:",
     seconds: "segundos",
     footer: " 2023 Práctica Matemática",
     encouragement: "¡Sigue practicando! Lo harás mejor la próxima vez.",
@@ -35,6 +41,11 @@ const translations = {
     backToPractice: "Volver a practicar",
     historyBtnText: "Historial",
     showHistoryText: "Ver mi historial completo",
+    historyCardDifficulty: "Dificultad:",
+    historyCardTime: "Tiempo:",
+    historyCardErrors: "Errores:",
+    historyCardJoke: "Chiste:",
+    resultMessage: "¡Felicidades! Has completado la práctica.",
   },
   eu: {
     title: "Matematika Praktika",
@@ -63,14 +74,25 @@ const translations = {
     newPractice: "Praktika berria",
     score: "Puntuazioa:",
     time: "Denbora:",
+    timer: "Denbora:",
+    timeTaken: "Denbora:",
+    tryAgainBtn: "saiatu berriro",
+    newPracticeBtn: "praktika berria",
+    jokeTitle: "Hemen duzu txantxo bat:",
     errors: "Akatsak:",
+    errorsMade: "Akatsak:",
     seconds: "segundo",
     footer: " 2023 Matematika Praktika",
     encouragement: "Jarraitu praktikatzen! Hobeto egingo duzu hurrengoan.",
     historyTitle: "Zure Historiala",
     backToPractice: "Praktikara itzuli",
-    historyBtnText: "Historial",
+    historyBtnText: "Historiala",
     showHistoryText: "Nire historia osoa ikusi",
+    historyCardDifficulty: "Dificultat",
+    historyCardTime: "Eguraldiak",
+    historyCardErrors: "Erroreak",
+    historyCardJoke: "Txantxoa",
+    resultMessage: "Zorionak! Praktika osatu duzu.",
   },
 };
 
@@ -112,6 +134,7 @@ const elements = {
   footerText: document.getElementById("footer-text"),
   multiplicationGrid: document.getElementById("multiplication-grid"),
   jokeText: document.getElementById("joke-text"),
+  jokeTitle: document.getElementById("joke-title"),
   historyTitle: document.getElementById("history-title"),
   historyContainer: document.getElementById("history-container"),
   backToPractice: document.getElementById("back-to-practice"),
@@ -120,6 +143,12 @@ const elements = {
   score: document.getElementById("score"),
   timeTaken: document.getElementById("time-taken"),
   errorsMade: document.getElementById("errors-made"),
+  timer: document.getElementById("timer"),
+  historyCardDifficulty: document.getElementById("history-card-difficulty"),
+  historyCardTime: document.getElementById("history-card-time"),
+  historyCardErrors: document.getElementById("history-card-errors"),
+  historyCardJoke: document.getElementById("history-card-joke"),
+  resultMessage: document.getElementById("result-message"),
 };
 
 function safeAddListener(id, event, handler) {
@@ -464,10 +493,10 @@ function showHistory() {
           <span>${item.type} - ${item.date}</span>
           <span>${item.score}/${item.total}</span>
         </div>
-        <div>Dificultad: ${item.difficulty}</div>
-        <div>Tiempo: ${item.time}s</div>
-        <div>Errores: ${item.errors}</div>
-        <div class="history-card-joke">${item.joke}</div>
+        <div id="history-card-difficulty">Dificultad: ${item.difficulty}</div>
+        <div id="history-card-time">Tiempo: ${item.time}s</div>
+        <div id="history-card-errors">Errores: ${item.errors}</div>
+        <div id="history-card-joke">${item.joke}</div>
       `;
 
       container.appendChild(card);
