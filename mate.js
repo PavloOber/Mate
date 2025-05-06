@@ -3,6 +3,7 @@ const translations = {
   es: {
     title: "Práctica Matemática",
     practiceTypes: "Tipos de práctica",
+    multiplication_btn: "Multiplicación",
     multiplication: "Multiplicación",
     addition: "Suma",
     subtraction: "Resta",
@@ -36,6 +37,7 @@ const translations = {
   eu: {
     title: "Matematika Praktika",
     practiceTypes: "Praktika motak",
+    multiplication_btn: "Biderketa",
     multiplication: "Biderketa",
     addition: "Batuketa",
     subtraction: "Kenketa",
