@@ -318,6 +318,11 @@ async function getJoke() {
 }
 
 function checkAnswer() {
+  // Check if the practice has already ended
+  if (state.currentQuestion >= state.questions.length) {
+    return; // Do nothing if practice is over
+  }
+
   const input = document.getElementById("answer-input");
   const userAnswer = parseInt(input.value);
   const correctAnswer = state.questions[state.currentQuestion].answer;
