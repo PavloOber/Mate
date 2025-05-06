@@ -282,18 +282,21 @@
               </div>
             </div>
 
-            <!-- History Screen -->
-            <div id="history-screen" class="hidden practice-screen">
-              <div class="flex justify-between items-center mb-4">
-                  <h2 class="text-xl font-bold" id="history-title">Tu Historial</h2>
-                  <button id="back-to-practice" class="px-4 py-2 bg-blue-600 text-white font-medium rounded hover:bg-blue-700 transition">Volver a practicar</button>
-              </div>
-              <div id="history-container" class="flex-1 space-y-4 overflow-y-auto pr-2">
-                  <!-- History items will be injected here by JS -->
-              </div>
-            </div>
           </div>
         </main>
+
+        <!-- History Screen (Moved outside main) -->
+        <div id="history-screen" class="hidden flex-1 container mx-auto px-4 py-8">
+          <div class="max-w-2xl mx-auto bg-white rounded-xl shadow-md overflow-hidden p-6">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-xl font-bold" id="history-title">Tu Historial</h2>
+                <button id="back-to-practice" class="px-4 py-2 bg-blue-600 text-white font-medium rounded hover:bg-blue-700 transition">Volver a practicar</button>
+            </div>
+            <div id="history-container" class="space-y-4 overflow-y-auto pr-2" style="max-height: calc(100vh - 200px);">
+                <!-- History items will be injected here by JS -->
+            </div>
+          </div>
+        </div>
     </div>
 
     <footer class="bg-gray-800 text-white py-4">
